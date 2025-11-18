@@ -9,7 +9,7 @@ Function hitungDiskon() {
   };
 }
 
-void main() {
+void main() { 
   var diskonBertingkat = hitungDiskon();
 
   diskonBertingkat(100000); // panggilan 1 → diskon 5%

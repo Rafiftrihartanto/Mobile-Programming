@@ -22,7 +22,7 @@ class Percobaan2 extends StatelessWidget {
               ),
             ),
           backgroundColor :Colors.green, //warna latar AppBar
-          foregroundColor: CupertinoColors.black, //warna teks putih
+          foregroundColor: CupertinoColors.black, //warna teks
         ),
         body: const Align(
           child : Column(

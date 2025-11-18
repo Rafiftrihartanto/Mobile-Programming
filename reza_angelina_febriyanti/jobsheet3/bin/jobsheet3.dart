@@ -30,4 +30,5 @@ void main(List<String> arguments) {
   //Ternary Operator
   String kondisi1 = ((suhuTubuh>=37) && (suhuTubuh<=42)) ? "Anda tidak boleh vaksin" : "Anda boleh vaksin";
   print(kondisi1);
+  
 }

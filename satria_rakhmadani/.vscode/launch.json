@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "project1",
+            "cwd": "jobsheet_1\\project1",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "pertemuan3",
+            "cwd": "jobsheet_2\\pertemuan3",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "pertemuan4",
+            "cwd": "jobsheet_3\\pertemuan4",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutterpertemuan5",
+            "cwd": "jobsheet_4\\flutterpertemuan5",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutterpertemuan5 (profile mode)",
+            "cwd": "jobsheet_4\\flutterpertemuan5",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutterpertemuan5 (release mode)",
+            "cwd": "jobsheet_4\\flutterpertemuan5",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

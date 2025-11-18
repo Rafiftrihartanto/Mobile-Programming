@@ -47,7 +47,7 @@ void main(List<String> arguments) {
   // -----------------------
   String first = "Hello";
   String second = "World";
-  stdout.writeln(first + " " + second);
+  stdout.writeln("$first $second");
   stdout.writeln("Panjang teks: ${first.length}");
   stdout.writeln("Huruf besar: ${second.toUpperCase()}");
   // -----------------------

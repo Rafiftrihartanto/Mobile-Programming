@@ -53,7 +53,7 @@ void main(List<String> arguments) {
   String str1 = "halo";
   String str2 = "halo";
   String str3 =
-      "ha" + "lo"; // Dibuat lewat operasi string, bukan literal langsung
+      "ha" "lo"; // Dibuat lewat operasi string, bukan literal langsung
 
   // == membandingkan isi string (value equality)
   stdout.writeln("Apakah str1 == str2? ${str1 == str2}"); // true

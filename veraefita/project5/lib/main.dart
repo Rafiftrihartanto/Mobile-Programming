@@ -162,8 +162,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Profile & Counter App',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.blue,
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 78, 20, 225),
+          foregroundColor: Colors.white,
+        ),
       ),
       home: const MainPage(),
       debugShowCheckedModeBanner: false,
@@ -180,11 +184,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
+  // PINDAHKAN: State counter dipindahkan ke sini
+  int _counter = 0; 
 
-  final List<Widget> _pages = [
-    const ProfilePage(),
-    const CounterPage(),
-  ];
+  // FUNGSI BARU: Fungsi untuk mengubah state counter
+  void _increment() => setState(() => _counter++);
+  void _decrement() => setState(() => _counter--);
+  void _reset() => setState(() => _counter = 0);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -194,9 +200,38 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 1. Buat list pages di dalam build() agar CounterPage selalu mendapat data terbaru
+    final List<Widget> pages = [
+      const ProfilePage(),
+      // 2. KIRIM data dan fungsi ke CounterPage melalui constructor
+      CounterPage(
+        currentCounter: _counter,
+        incrementFunction: _increment,
+        decrementFunction: _decrement,
+        resetFunction: _reset,
+      ),
+    ];
+
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 26, 45, 251),
+              Color.fromARGB(255, 255, 248, 255),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        // Gunakan list pages yang sudah diperbarui
+        child: pages[_selectedIndex],
+      ),
+      
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: const Color.fromARGB(255, 10, 18, 130),
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil"),
           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: "Counter"),
@@ -204,36 +239,52 @@ class _MainPageState extends State<MainPage> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+      
+      // PERBAIKAN: Floating Action Button sekarang memanggil fungsi yang benar
+      floatingActionButton: FloatingActionButton(
+        onPressed: _increment, // Terhubung ke fungsi _increment di _MainPageState
+        tooltip: 'Tambah angka',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
 
-/// ======================
-/// 1️⃣ Halaman Profil
-/// ======================
+// ======================
+// 1️⃣ Halaman Profil (Tidak ada perubahan fungsi, hanya styling)
+// ======================
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profil Mahasiswa")),
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: const Text("Profil Mahasiswa"),
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(255, 21, 101, 239),
+      ),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(20),
           margin: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.deepPurple[50],
+            // Warna container profil (terang) dan semi-transparan
+            color: const Color.fromARGB(255, 26, 45, 251).withOpacity(0.6), 
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const FlutterLogo(size: 70),
-              const SizedBox(height: 10),
+              // ❌ BARIS FlutterLogo TELAH DIHAPUS DI SINI
+              
+              // Jarak 10 pixel dipertahankan
+              const SizedBox(height: 10), 
+              
               ClipOval(
                 child: Image.asset(
-                  'assets/images/poltek.jpeg', // ganti sesuai file kamu
+                  'assets/images/poltek.jpeg',
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -242,27 +293,27 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(height: 10),
               const Text(
                 'Vera Efita Hudi Putri',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               const Text(
                 'NIM: 2341760047',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: Colors.white70),
               ),
               const Text(
                 'Jurusan Teknologi Informasi',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: Colors.white70),
               ),
               const SizedBox(height: 15),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.email, color: Colors.purple),
+                  Icon(Icons.email, color: Colors.white70),
                   SizedBox(width: 8),
-                  Text('veraefita05@email.com'),
+                  Text('veraefita05@email.com', style: TextStyle(color: Colors.white70)),
                   SizedBox(width: 20),
-                  Icon(Icons.phone, color: Colors.purple),
+                  Icon(Icons.phone, color: Colors.white70),
                   SizedBox(width: 8),
-                  Text('0896-2606-5619'),
+                  Text('0896-2606-5619', style: TextStyle(color: Colors.white70)),
                 ],
               ),
             ],
@@ -273,58 +324,62 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-/// ======================
-/// 2️⃣ Halaman Counter
-/// ======================
-class CounterPage extends StatefulWidget {
-  const CounterPage({super.key});
+// ======================
+// 2️⃣ Halaman Counter (Diubah menjadi StatelessWidget, menerima fungsi dari MainPage)
+// ======================
+class CounterPage extends StatelessWidget {
+  // Menerima data dan fungsi melalui constructor
+  final int currentCounter;
+  final VoidCallback incrementFunction;
+  final VoidCallback decrementFunction;
+  final VoidCallback resetFunction;
 
-  @override
-  State<CounterPage> createState() => _CounterPageState();
-}
-
-class _CounterPageState extends State<CounterPage> {
-  int _counter = 0;
-
-  void _increment() => setState(() => _counter++);
-  void _decrement() => setState(() => _counter--);
-  void _reset() => setState(() => _counter = 0);
+  const CounterPage({
+    super.key,
+    required this.currentCounter,
+    required this.incrementFunction,
+    required this.decrementFunction,
+    required this.resetFunction,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Counter App')),
+      backgroundColor: Colors.transparent, 
+      appBar: AppBar(
+        title: const Text('Counter App'),
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(255, 21, 101, 239),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
               'Angka saat ini:',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
             Text(
-              '$_counter',
-              style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+              // GUNAKAN: Menggunakan data yang diterima
+              '$currentCounter',
+              style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(onPressed: _increment, child: const Text('+')),
+                // PANGGIL: Memanggil fungsi yang diterima dari MainPage
+                ElevatedButton(onPressed: incrementFunction, child: const Text('+')),
                 const SizedBox(width: 10),
-                ElevatedButton(onPressed: _decrement, child: const Text('-')),
+                ElevatedButton(onPressed: decrementFunction, child: const Text('-')),
                 const SizedBox(width: 10),
-                OutlinedButton(onPressed: _reset, child: const Text('Reset')),
+                OutlinedButton(onPressed: resetFunction, child: const Text('Reset')),
               ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _increment,
-        tooltip: 'Tambah angka',
-        child: const Icon(Icons.add),
-      ),
+      // Hapus FloatingActionButton di sini karena sudah dipindahkan ke MainPage
     );
   }
 }

@@ -4,7 +4,7 @@ void main() {
   runApp(const MyStatelessApp());
 }
 
-class MyStatelessApp extends StatelessWidget {
+ class MyStatelessApp extends StatelessWidget {
   const MyStatelessApp({super.key});
 
   @override

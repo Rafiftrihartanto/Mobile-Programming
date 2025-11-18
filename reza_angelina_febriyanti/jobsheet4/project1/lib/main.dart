@@ -41,7 +41,8 @@ class Percobaan1 extends StatelessWidget {
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-              )),
+              )
+            ),
 
               SizedBox(height: 20), //Jarak antar bagian
 
